@@ -2,7 +2,6 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.decomposition import NMF, PCA
 from sklearn.manifold import TSNE
 import numpy as np
-# import spacy
 import os
 
 
@@ -40,7 +39,7 @@ def most_frequent_words(text, N):
     count_vec = CountVectorizer(stop_words = "english").fit([text])
     X_count = count_vec.transform([text])
     words_freq = [(word, X_count[0, idx]) for word, idx in count_vec.vocabulary_.items()]
-    words_freq =sorted(words_freq, key = lambda x: x[1], reverse=True)
+    words_freq = sorted(words_freq, key = lambda x: x[1], reverse=True)
     print(words_freq[:N])
                        
 
@@ -56,18 +55,34 @@ if __name__ == "__main__":
     # print(len(fake_corpora['fold4']))
 
     all_text_from_true_corpora = sum(list(true_corpora.values()), []) # this is a list of strings
+    all_text_from_true_corpora_flatten = " ".join(all_text_from_true_corpora)
+    all_text_from_fake_corpora = sum(list(fake_corpora.values()), []) # this is a list of strings
+    all_text_from_fake_corpora_flatten = " ".join(all_text_from_fake_corpora)
+
+    lens_true_corpora = [len(review.split(" ")) for review in all_text_from_true_corpora]
+    avg_len_true_corpora = sum(lens_true_corpora)/len(lens_true_corpora)
+
+    lens_fake_corpora = [len(review.split(" ")) for review in all_text_from_fake_corpora]
+    avg_len_fake_corpora = sum(lens_fake_corpora)/len(lens_fake_corpora)
+
+    print("The average length of a true review is : ", avg_len_true_corpora, ", where as a fake one has an average of ", avg_len_fake_corpora)
+    
     # features_from_laura_link(all_text_from_true_corpora)
     ## The results are not that good. we need to do sth else, this is houwing the documtne-term matrix i.e. in each review how many time does each word occur. This is not useful. 
 
     ### finding the most common N words : 
-    all_text_from_true_corpora_flatten = " ".join(all_text_from_true_corpora)
-    most_frequent_words(all_text_from_true_corpora_flatten, 10)
+    print("The 20 most frequent words from the true corpora are: ")
+    most_frequent_words(all_text_from_true_corpora_flatten, 20)
+
+    print("The 20 most frequent words from the fake corpora are: ")
+    most_frequent_words(all_text_from_fake_corpora_flatten, 20)
+
     '''
     Suggested features 
      - len of review
      - how many dots, columns, sth are used, normalized by the length
      - 1) we can find the most frequent words in the corpora and then 2) see how many words in the review are in the 10/20/30 most frequent words used (also normalized by length?)
-     '''
+    '''
 
 
 
