@@ -23,7 +23,7 @@ def read_data(folder_name = "deceptive_from_MTurk"):
 
     return corpora
 
-def get_features(text):
+def features_from_laura_link(text):
     count_vec = CountVectorizer(stop_words = "english")
     X_count = count_vec.fit_transform(text)
     print('CountVectorizer:')
@@ -37,13 +37,12 @@ def get_features(text):
     print(X_tfidf.toarray()[0][300:310])
 
 def most_frequent_words(text, N):
-    count_vec = CountVectorizer(stop_words = "english")
-    X_count = count_vec.fit_transform([text])
-    print(X_count.shape)
-    # this is a 1d array - find the indices of the N largest numbers and then find what words those are in get_feature_names_out()
-    print('CountVectorizer:')
-    print(count_vec.get_feature_names_out()[0:10])
-    print(X_count.toarray()[0][0:10]) 
+    count_vec = CountVectorizer(stop_words = "english").fit([text])
+    X_count = count_vec.transform([text])
+    words_freq = [(word, X_count[0, idx]) for word, idx in count_vec.vocabulary_.items()]
+    words_freq =sorted(words_freq, key = lambda x: x[1], reverse=True)
+    print(words_freq[:N])
+                       
 
 if __name__ == "__main__":
     true_corpora = read_data("truthful_from_Web")
@@ -57,8 +56,7 @@ if __name__ == "__main__":
     # print(len(fake_corpora['fold4']))
 
     all_text_from_true_corpora = sum(list(true_corpora.values()), []) # this is a list of strings
-    # get_features(all_text_from_true_corpora)
-
+    # features_from_laura_link(all_text_from_true_corpora)
     ## The results are not that good. we need to do sth else, this is houwing the documtne-term matrix i.e. in each review how many time does each word occur. This is not useful. 
 
     ### finding the most common N words : 
