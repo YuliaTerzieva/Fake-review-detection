@@ -8,7 +8,7 @@ import string
 
 def read_data(folder_name = "deceptive_from_MTurk"):
     """
-    This one returns a disk of fold - reviews, where reviews are a list of strings 
+    This one returns a dic of fold - reviews, where reviews are a list of strings 
     """
     corpora = {}
     path_to_foulder = "Fake-review-detection/op_spam_v1.4/negative_polarity/" + folder_name
