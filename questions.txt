@@ -1,0 +1,11 @@
+Should we use simple features such as length of review? 
+If we do how are we going to balance it (or even: is it needed) given that we would have many more bi-gram features.
+Can we use hard-coded keywords?
+Can we use sentiment analysis?
+
+Okay we have the most frequest words in the whole corpora, but we should do that only on the folds we train on.
+But then do we take those to see how many of the words in the given review are from those 30 most frequest words?
+
+How many feature should we have? But then how do we select the most frequest words - without using the fold we test one?
+
+The other option would be to have only the count of words that are in the most frequest, not having the nost frequest as features. 

@@ -1,0 +1,13 @@
+Ideas : 
+- 1) we can find the most frequent words in the corpora and then 2) see how many words in the review are in the 10/20/30 most frequent words used (also normalized by length?)
+- in general the real reviews are more positive - and have more grammar mistakes also
+
+Already implemented : 
+- length of review is done
+- Implemented frequent words, bigrams and trigrams
+- Punctuation implemented
+
+
+After we make the punctuation feature, we remove all punctuation and numbers. 
+
+pandas X and pandas y one for train and one for test. 
