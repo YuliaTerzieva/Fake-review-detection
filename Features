@@ -1,0 +1,20 @@
+import nltk
+from nltk.tokenize import sent_tokenize, word_tokenize
+from nltk.util import bigrams
+from collections import Counter
+from nltk.util import ngrams
+
+#N-gram feature (top 10)
+def ngram_feature (n, text):
+    ngram_list = list(ngrams(text, n))
+    ngram_counts = Counter(ngram_list)
+    top_10_ngrams = ngram_counts.most_common(10)
+    return top_10_ngrams
+
+sentence = word_tokenize("Hi, my name is Laura Hoekstra, Laura Hoekstra".lower())
+n = 2 #= Bigram #change number for ngrams of other lengths
+top_10_ngrams = ngram_feature(2, sentence)
+
+#Printing the top 10 n_grams
+for ngram, count in top_10_ngrams:
+    print("Ngram:", ngram, "Count:", count)
