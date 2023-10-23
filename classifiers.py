@@ -1,6 +1,6 @@
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.model_selection import GridSearchCV
-from sklearn.linear_model import LogisticRegression, LogisticRegressionCV
+from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, confusion_matrix
@@ -35,6 +35,8 @@ def grid_search(model, param_grid, X_train, y_train, X_test, y_test):
     print("All results:")
     print(clf.cv_results_)
 
+    return clf
+
 
 # 1. Classifier: Multinomial NB
 model = MultinomialNB(force_alpha=True)
@@ -43,7 +45,7 @@ param_grid = {
 }
 print("\n")
 print("Multinomial Naive Bayes:")
-grid_search(model, param_grid)
+clf_multinb = grid_search(model, param_grid)
 
 # 2. Classifier: Logistic regression
 model = LogisticRegression()
@@ -54,7 +56,7 @@ param_grid = {
 }
 print("\n")
 print("Logistic Regression:")
-grid_search(model, param_grid)
+clf_logreg = grid_search(model, param_grid)
 
 # 3. Classifier: Classification trees
 model = DecisionTreeClassifier()
@@ -67,7 +69,7 @@ param_grid = {
 }
 print("\n")
 print("Classification trees:")
-grid_search(model, param_grid)
+clf_ctrees = grid_search(model, param_grid)
 
 # 4. Classifier: Random forests
 model = RandomForestClassifier()
@@ -81,36 +83,7 @@ param_grid = {
 }
 print("\n")
 print("Random Forests:")
-grid_search(model, param_grid)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+clf_randforest = grid_search(model, param_grid)
 
 
 
