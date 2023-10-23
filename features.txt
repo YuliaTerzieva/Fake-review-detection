@@ -6,3 +6,8 @@ Already implemented :
 - length of review is done
 - Implemented frequent words, bigrams and trigrams
 - Punctuation implemented
+
+
+After we make the punctuation feature, we remove all punctuation and numbers. 
+
+pandas X and pandas y one for train and one for test. 
