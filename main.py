@@ -11,7 +11,7 @@ def read_data(folder_name = "deceptive_from_MTurk"):
     This one returns a dic of fold - reviews, where reviews are a list of strings 
     """
     corpora = {}
-    path_to_foulder = "Fake-review-detection/op_spam_v1.4/negative_polarity/" + folder_name
+    path_to_foulder = "op_spam_v1.4/negative_polarity/" + folder_name
     # Change the directory 
     for file in os.listdir(path_to_foulder): 
         fold = []
@@ -34,7 +34,7 @@ def most_frequent_words(text, N, grams = 1):
     return words_freq[:N]
 
 def all_words_occuring_once(text, grams = 1):
-    count_vec = CountVectorizer(stop_words = "english", ngram_range = (grams, grams)).fit([text])
+    count_vec = CountVectorizer(ngram_range = (grams, grams)).fit([text])
     X_count = count_vec.transform([text])
     words_freq = [(word, X_count[0, idx]) for word, idx in count_vec.vocabulary_.items()]
     single_words = [word for (word, count) in words_freq if count == 1]
@@ -69,35 +69,35 @@ if __name__ == "__main__":
     lens_fake_corpora = [len(review.split(" ")) for review in all_text_from_fake_corpora]
     avg_len_fake_corpora = sum(lens_fake_corpora)/len(lens_fake_corpora)
 
-    print("\n ################################################################## \n")
-    print("The average length of a true review is : ", avg_len_true_corpora, "\n\
-           where as a fake one has an average of ", avg_len_fake_corpora)
+    # print("\n ################################################################## \n")
+    # print("The average length of a true review is : ", avg_len_true_corpora, "\n\
+    #        where as a fake one has an average of ", avg_len_fake_corpora)
     
-    print("\n ################################################################## \n")
-    print("The average punctuation in a true review is : ", average_count_punctuation(all_text_from_true_corpora), "\n\
-            where for a fake one is ", average_count_punctuation(all_text_from_fake_corpora))
+    # print("\n ################################################################## \n")
+    # print("The average punctuation in a true review is : ", average_count_punctuation(all_text_from_true_corpora), "\n\
+    #         where for a fake one is ", average_count_punctuation(all_text_from_fake_corpora))
     
-    ### finding the most common N words : 
-    print("\n ################################################################## \n")
-    print("The 20 most frequent words from the true corpora are: ")
-    print(most_frequent_words(all_text_from_true_corpora_flatten, 20, 1))
+    # ### finding the most common N words : 
+    # print("\n ################################################################## \n")
+    # print("The 20 most frequent words from the true corpora are: ")
+    # print(most_frequent_words(all_text_from_true_corpora_flatten, 20, 1))
 
-    print("The 20 most frequent words from the fake corpora are: ")
-    print(most_frequent_words(all_text_from_fake_corpora_flatten, 20, 1))
+    # print("The 20 most frequent words from the fake corpora are: ")
+    # print(most_frequent_words(all_text_from_fake_corpora_flatten, 20, 1))
 
-    print("\n ################################################################## \n")
-    print("The 20 most frequent bigrams from the true corpora are: ")
-    print(most_frequent_words(all_text_from_true_corpora_flatten, 20, 2))
+    # print("\n ################################################################## \n")
+    # print("The 20 most frequent bigrams from the true corpora are: ")
+    # print(most_frequent_words(all_text_from_true_corpora_flatten, 20, 2))
     
-    print("The 20 most frequent bigrams from the fake corpora are: ")
-    print(most_frequent_words(all_text_from_fake_corpora_flatten, 20, 2))
+    # print("The 20 most frequent bigrams from the fake corpora are: ")
+    # print(most_frequent_words(all_text_from_fake_corpora_flatten, 20, 2))
 
-    print("\n ################################################################## \n")
-    print("The 20 most frequent trigrams from the true corpora are: ")
-    print(most_frequent_words(all_text_from_true_corpora_flatten, 20, 3))
+    # print("\n ################################################################## \n")
+    # print("The 20 most frequent trigrams from the true corpora are: ")
+    # print(most_frequent_words(all_text_from_true_corpora_flatten, 20, 3))
 
-    print("The 20 most frequent trigrams from the fake corpora are: ")
-    print(most_frequent_words(all_text_from_fake_corpora_flatten, 20, 3))
+    # print("The 20 most frequent trigrams from the fake corpora are: ")
+    # print(most_frequent_words(all_text_from_fake_corpora_flatten, 20, 3))
 
     print("\n ################################################################## \n")
     print("The words that appear just once from the true corpora are: ")
