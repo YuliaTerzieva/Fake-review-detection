@@ -1,3 +1,7 @@
+import time
+from itertools import combinations
+
+import numpy as np
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.model_selection import GridSearchCV
 from sklearn.linear_model import LogisticRegression
@@ -5,6 +9,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, confusion_matrix
 from sklearn import metrics
+from mlxtend.evaluate import paired_ttest_5x2cv
 
 from dataset import *
 
@@ -34,35 +39,48 @@ def grid_search(model, param_grid, X_train, y_train, X_test, y_test):
 
     calculate_metrics(y_test, pred, clf)
 
-    print("All results:")
-    print(clf.cv_results_)
-
     return clf
 
 
+# measuring runtime
+start = time.time()
+
 # loading pre-processed data
-X_train, y_train, X_test, y_test, feature_names = make_n_gram_dataset(1, 1)
+X_train_uni, y_train_uni, X_test_uni, y_test_uni, feature_names_uni = make_n_gram_dataset(1, 1)
+X_train_bi, y_train_bi, X_test_bi, y_test_bi, feature_names_bi = make_n_gram_dataset(1, 2)
+
+all_classifiers = []
 
 # 1. Classifier: Multinomial NB
 model = MultinomialNB(force_alpha=True)
 param_grid = {
-    "alpha": [1.0],  # ToDo: choose parameters (maybe np.logspace)
+    "alpha": list(np.linspace(0.1, 2, num=11)),
     "fit_prior": [True, False]
 }
 print("\n")
-print('\033[92m' + "Multinomial Naive Bayes:")
-clf_multinb = grid_search(model, param_grid, X_train, y_train, X_test, y_test)
+print('\033[92m' + "Multinomial Naive Bayes with unigram features:")
+clf_multinb_uni = grid_search(model, param_grid, X_train_uni, y_train_uni, X_test_uni, y_test_uni)
+all_classifiers.append(clf_multinb_uni)
+print('\033[92m' + "Multinomial Naive Bayes with unigram and bigram features:")
+clf_multinb_bi = grid_search(model, param_grid, X_train_bi, y_train_bi, X_test_bi, y_test_bi)
+all_classifiers.append(clf_multinb_bi)
+
 
 # 2. Classifier: Logistic regression
 model = LogisticRegression()
 param_grid = {
     "penalty": ["l1"],  # lasso penalty
     "solver": ["liblinear"],
-    "C": [0.1],  # ToDo: choose parameters (maybe np.logspace)
+    "C": list(np.ones(10) - (np.logspace(0, 2, num=10) / 100) + 0.01),
 }
 print("\n")
-print('\033[92m' + "Logistic Regression:")
-clf_logreg = grid_search(model, param_grid, X_train, y_train, X_test, y_test)
+print('\033[92m' + "Logistic Regression with unigram features:")
+clf_logreg_uni = grid_search(model, param_grid, X_train_uni, y_train_uni, X_test_uni, y_test_uni)
+all_classifiers.append(clf_logreg_uni)
+print('\033[92m' + "Logistic Regression with unigram and bigram features:")
+clf_logreg_bi = grid_search(model, param_grid, X_train_bi, y_train_bi, X_test_bi, y_test_bi)
+all_classifiers.append(clf_logreg_bi)
+
 
 # 3. Classifier: Classification trees
 model = DecisionTreeClassifier()
@@ -74,8 +92,13 @@ param_grid = {
     "ccp_alpha": [0.0],
 }
 print("\n")
-print('\033[92m' + "Classification trees:")
-clf_ctrees = grid_search(model, param_grid, X_train, y_train, X_test, y_test)
+print('\033[92m' + "Classification trees with unigram features:")
+clf_ctrees_uni = grid_search(model, param_grid, X_train_uni, y_train_uni, X_test_uni, y_test_uni)
+all_classifiers.append(clf_ctrees_uni)
+print('\033[92m' + "Classification trees with unigram and bigram features:")
+clf_ctrees_bi = grid_search(model, param_grid, X_train_bi, y_train_bi, X_test_bi, y_test_bi)
+all_classifiers.append(clf_ctrees_bi)
+
 
 # 4. Classifier: Random forests
 model = RandomForestClassifier()
@@ -88,8 +111,28 @@ param_grid = {
     "ccp_alpha": [0.0],
 }
 print("\n")
-print('\033[92m' + "Random Forests:")
-clf_randforest = grid_search(model, param_grid, X_train, y_train, X_test, y_test)
+print('\033[92m' + "Random Forests with unigram features:")
+clf_randforest_uni = grid_search(model, param_grid, X_train_uni, y_train_uni, X_test_uni, y_test_uni)
+all_classifiers.append(clf_randforest_uni)
+print('\033[92m' + "Random forest with unigram and bigram features:")
+clf_ranforest_bi = grid_search(model, param_grid, X_train_bi, y_train_bi, X_test_bi, y_test_bi)
+all_classifiers.append(clf_ranforest_bi)
+
+
+def accuracy_t_test(pair):  # ToDo: implement t test for two classifiers + print relevant results
+    pass
+
+
+# ToDo: put classifiers in dict with name as key and predictions as value
+# pairs_of_models = list(map(dict, combinations(all_classifiers.items(), 2)))
+# for pair in pairs_of_models:
+  #  accuracy_t_test(pair)
+
+
+# measuring runtime
+runtime = time.time() - start
+print('\033[92m' + "Execution time in seconds: ", runtime)
+
 
 
 
