@@ -5,7 +5,7 @@ import re
 import os
 
 class Data :
-    def __init__(self):
+    def __init__(self, max_grams):
         self.train_true, self.test_true = self.separate_dataset()
         self.flat_train_true = " ".join(self.train_true)
 
@@ -14,10 +14,10 @@ class Data :
 
         self.infrequent_words = self.all_words_occuring_once(self.flat_train_true + self.flat_train_fake)
 
-        self.X_train, self.Y_train, self.X_test, self.Y_test, self.feature_names = self.make_n_gram_dataset(1, 2)
+        self.X_train, self.Y_train, self.X_test, self.Y_test, self.feature_names = self.make_n_gram_dataset(1, max_grams)
 
 
-    def read_data(folder_name = "deceptive_from_MTurk"):
+    def read_data(self, folder_name = "deceptive_from_MTurk"):
         """
         A funtion that take a folder name and creates a dictionary with 
         kays the folds and value the reviews in a list. 
@@ -38,7 +38,7 @@ class Data :
 
         return corpora
 
-    def most_frequent_words(text, N, grams = 1):
+    def most_frequent_words(self, text, N, grams = 1):
         """
         params: 
                 - text  - a string of all the interviews 
@@ -51,14 +51,14 @@ class Data :
         words_freq = sorted(words_freq, key = lambda x: x[1], reverse=True)
         return words_freq[:N]
 
-    def all_words_occuring_once(text, grams = 1):
+    def all_words_occuring_once(self, text, grams = 1):
         count_vec = CountVectorizer(ngram_range = (grams, grams)).fit([text])
         X_count = count_vec.transform([text])
         words_freq = [(word, X_count[0, idx]) for word, idx in count_vec.vocabulary_.items()]
         single_words = [word for (word, count) in words_freq if count == 1]
         return single_words
         
-    def average_count_punctuation(corpora):
+    def average_count_punctuation(self, corpora):
         punctuation_count = sum(1 for review in corpora for char in review if char in string.punctuation)
         return punctuation_count/len(corpora)
 

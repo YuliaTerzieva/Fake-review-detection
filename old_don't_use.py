@@ -40,12 +40,9 @@ def all_words_occuring_once(text, grams = 1):
     single_words = [word for (word, count) in words_freq if count == 1]
     return single_words
     
-
 def average_count_punctuation(corpora):
     punctuation_count = sum(1 for review in corpora for char in review if char in string.punctuation)
     return punctuation_count/len(corpora)
-
-                       
 
 if __name__ == "__main__":
     true_corpora = read_data("truthful_from_Web")

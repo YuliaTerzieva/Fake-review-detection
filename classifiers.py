@@ -11,7 +11,7 @@ from sklearn.metrics import accuracy_score, confusion_matrix
 from sklearn import metrics
 from mlxtend.evaluate import paired_ttest_5x2cv
 
-from dataset import *
+from Data import *
 
 
 def calculate_metrics(label, pred, clf):
@@ -45,9 +45,12 @@ def grid_search(model, param_grid, X_train, y_train, X_test, y_test):
 # measuring runtime
 start = time.time()
 
+data_unigrams= Data(1)
+data_bigrams = Data(2)
+
 # loading pre-processed data
-X_train_uni, y_train_uni, X_test_uni, y_test_uni, feature_names_uni = make_n_gram_dataset(1, 1)
-X_train_bi, y_train_bi, X_test_bi, y_test_bi, feature_names_bi = make_n_gram_dataset(1, 2)
+X_train_uni, y_train_uni, X_test_uni, y_test_uni, feature_names_uni = data_unigrams.X_train, data_unigrams.Y_train, data_unigrams.X_test, data_unigrams.Y_test, data_unigrams.feature_names
+X_train_bi, y_train_bi, X_test_bi, y_test_bi, feature_names_bi = data_bigrams.X_train, data_bigrams.Y_train, data_bigrams.X_test, data_bigrams.Y_test, data_bigrams.feature_names
 
 all_classifiers = []
 
