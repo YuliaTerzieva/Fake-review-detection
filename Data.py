@@ -6,11 +6,11 @@ import os
 
 class Data :
     def __init__(self, max_grams):
-        self.train_true, self.test_true = self.separate_dataset()
-        self.flat_train_true = " ".join(self.train_true)
+        self.train_true, self.test_true = self.separate_dataset() # lists of reviews
+        self.flat_train_true = " ".join(self.train_true) # string with all reviews in one
 
-        self.train_fake, self.test_fake = self.separate_dataset(real = False)
-        self.flat_train_fake = " ".join(self.train_fake)
+        self.train_fake, self.test_fake = self.separate_dataset(real = False) # lists of reviews
+        self.flat_train_fake = " ".join(self.train_fake) # string with all reviews in one
 
         self.infrequent_words = self.all_words_occuring_once(self.flat_train_true + self.flat_train_fake)
 
@@ -52,11 +52,16 @@ class Data :
         return words_freq[:N]
 
     def all_words_occuring_once(self, text, grams = 1):
+        """
+            A better implementation would be to do this with Counter from lib collections
+            then sort it and take only the last N ones
+        """
         count_vec = CountVectorizer(ngram_range = (grams, grams)).fit([text])
         X_count = count_vec.transform([text])
         words_freq = [(word, X_count[0, idx]) for word, idx in count_vec.vocabulary_.items()]
         single_words = [word for (word, count) in words_freq if count == 1]
         return single_words
+
         
     def average_count_punctuation(self, corpora):
         punctuation_count = sum(1 for review in corpora for char in review if char in string.punctuation)

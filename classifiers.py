@@ -10,7 +10,7 @@ from sklearn.metrics import accuracy_score, confusion_matrix
 from sklearn import metrics
 from scipy import stats
 from itertools import combinations
-
+from sklearn.feature_selection import mutual_info_classif
 from Data import *
 
 
@@ -42,6 +42,18 @@ def grid_search(model, param_grid, X_train, y_train, X_test, y_test):
     print("Class name: ", model.__class__.__name__)
     return model.__class__.__name__, pred
 
+def mutual_information(X, y):
+    """
+        Takes an review-gram array and a label array. 
+        Transforms the review-gram array to binary term present/absent
+        Calculates the mutual info and returns an single array
+        with length "#columns in review-gram array"
+
+        returns : 1D ndarray with len X.shape[1]
+    """
+    binary_X = np.where(X>0, 1, 0)
+    print(binary_X.shape)
+    return mutual_info_classif(binary_X, y) # this is ndarray
 
 #######################################################################################################################
 
@@ -56,6 +68,38 @@ data_bigrams = Data(2)
 X_train_uni, y_train_uni, X_test_uni, y_test_uni, feature_names_uni = data_unigrams.X_train, data_unigrams.Y_train, data_unigrams.X_test, data_unigrams.Y_test, data_unigrams.feature_names
 X_train_bi, y_train_bi, X_test_bi, y_test_bi, feature_names_bi = data_bigrams.X_train, data_bigrams.Y_train, data_bigrams.X_test, data_bigrams.Y_test, data_bigrams.feature_names
 
+print(X_train_uni.shape) # 3799 features
+print(X_train_bi.shape) # 38717 features
+
+mutual_information_X_train_uni = mutual_information(X_train_uni, y_train_uni) # those are ndarrays
+mutual_information_X_train_bi = mutual_information(X_train_bi, y_train_bi) # those are ndarrays
+
+print('\033[95m' + "##### TEST YULIA #####")
+best_uni_features = sorted(zip(mutual_information_X_train_uni, data_unigrams.feature_names), reverse=True)
+print('\033[95m' + "The 20 best uni features are")
+for score, f_name in best_uni_features[:20]: # change this 20 if you want more features :)
+        print(f_name, score)
+print('\033[95m' + "The 20 worse uni features are")
+for score, f_name in best_uni_features[-20:]: # change this 20 if you want more features :)
+        print(f_name, score)
+
+best_bi_features = sorted(zip(mutual_information_X_train_bi, data_bigrams.feature_names), reverse=True)
+print('\033[95m' + "The 20 best bi features are")
+for score, f_name in best_uni_features[:20]: # change this 20 if you want more features :)
+        print(f_name, score)
+print('\033[95m' + "The 20 worse bi features are")
+for score, f_name in best_uni_features[-20:]: # change this 20 if you want more features :)
+        print(f_name, score)
+
+
+# RAOUL the following code : 
+# 1) gives the indices based on the value order of mutual_information_X_train_uni in increasing way
+# 2) we take the last 100 which are the indices of the best 100 features based on MI
+# 3) we select only those columns in the X_train_uni so we predict on those
+X_train_uni_top_100 = X_train_uni[:, np.argsort(mutual_information_X_train_uni)[-100:]] 
+
+# Same code, but for bi-grams : here i decided to take the best 2000, because the total number of features are 38717
+X_train_bi_top_100 = X_train_bi[:, np.argsort(mutual_information_X_train_bi)[-2000:]] 
 
 #######################################################################################################################
 

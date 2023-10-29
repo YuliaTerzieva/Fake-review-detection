@@ -1,0 +1,16 @@
+SUPER IMPORTANT 
+In the lecture slides - lecture 9 slides ~19 we see that
+we should count word occurrence per class, 
+however that is not what we do
+the vocab that we have is over all the reviews 
+
+what about stemming lemmatization. should we do 
+
+well our models are better than random guessing given that they are above 50%  so it is alllll good :D 
+
+for mutural information you look if the word occurs in the review, not the count. 
+slide 42 of the first texi mining lecture. try training the model only on the top 50/100 features from the muturlal information
+
+for the features check slide 44 of the first text lecture
+
+we gotta conclude that naive bayes is good model
