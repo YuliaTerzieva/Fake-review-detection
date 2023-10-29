@@ -74,7 +74,11 @@ print(X_train_bi.shape) # 38717 features
 mutual_information_X_train_uni = mutual_information(X_train_uni, y_train_uni) # those are ndarrays
 mutual_information_X_train_bi = mutual_information(X_train_bi, y_train_bi) # those are ndarrays
 
-print('\033[95m' + "##### TEST YULIA #####")
+print('\033[95m' + " Mutual information (MI) between two random variables is a non-negative value, "\,
+      "which measures the dependency between the variables. It is equal to zero if and only if "\
+        "two random variables are independent, and higher values mean higher dependency.
+
+The function relies on nonparametric methods based on entropy estimation from k-nearest neighbors distances as described in [2] and [3]. Both methods are based on the idea originally proposed in [4].")
 best_uni_features = sorted(zip(mutual_information_X_train_uni, data_unigrams.feature_names), reverse=True)
 print('\033[95m' + "The 20 best uni features are")
 for score, f_name in best_uni_features[:20]: # change this 20 if you want more features :)
