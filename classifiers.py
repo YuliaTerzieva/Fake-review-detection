@@ -1,6 +1,7 @@
 import time
 
 import numpy as np
+from matplotlib import pyplot as plt
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.model_selection import GridSearchCV
 from sklearn.linear_model import LogisticRegression
@@ -68,42 +69,45 @@ data_bigrams = Data(2)
 X_train_uni, y_train_uni, X_test_uni, y_test_uni, feature_names_uni = data_unigrams.X_train, data_unigrams.Y_train, data_unigrams.X_test, data_unigrams.Y_test, data_unigrams.feature_names
 X_train_bi, y_train_bi, X_test_bi, y_test_bi, feature_names_bi = data_bigrams.X_train, data_bigrams.Y_train, data_bigrams.X_test, data_bigrams.Y_test, data_bigrams.feature_names
 
-print(X_train_uni.shape) # 3799 features
-print(X_train_bi.shape) # 38717 features
-
 mutual_information_X_train_uni = mutual_information(X_train_uni, y_train_uni) # those are ndarrays
 mutual_information_X_train_bi = mutual_information(X_train_bi, y_train_bi) # those are ndarrays
 
-print('\033[95m' + " Mutual information (MI) between two random variables is a non-negative value, "\,
-      "which measures the dependency between the variables. It is equal to zero if and only if "\
-        "two random variables are independent, and higher values mean higher dependency.
+percentage = np.arange(0.05, 0.4, 0.025)
+accuracies_uni = []
+accuracies_bi = []
+for p in percentage:
+    print("Percentage: ", p)
 
-The function relies on nonparametric methods based on entropy estimation from k-nearest neighbors distances as described in [2] and [3]. Both methods are based on the idea originally proposed in [4].")
-best_uni_features = sorted(zip(mutual_information_X_train_uni, data_unigrams.feature_names), reverse=True)
-print('\033[95m' + "The 20 best uni features are")
-for score, f_name in best_uni_features[:20]: # change this 20 if you want more features :)
-        print(f_name, score)
-print('\033[95m' + "The 20 worse uni features are")
-for score, f_name in best_uni_features[-20:]: # change this 20 if you want more features :)
-        print(f_name, score)
+    best_n_uni = int(3799 // p)
+    best_n_bi = int(38717 // p)
 
-best_bi_features = sorted(zip(mutual_information_X_train_bi, data_bigrams.feature_names), reverse=True)
-print('\033[95m' + "The 20 best bi features are")
-for score, f_name in best_uni_features[:20]: # change this 20 if you want more features :)
-        print(f_name, score)
-print('\033[95m' + "The 20 worse bi features are")
-for score, f_name in best_uni_features[-20:]: # change this 20 if you want more features :)
-        print(f_name, score)
+    X_train_uni_top_percent = X_train_uni[:, np.argsort(mutual_information_X_train_uni)[-(best_n_uni):]]
+    X_train_bi_top_percent = X_train_bi[:, np.argsort(mutual_information_X_train_bi)[-best_n_bi:]]
+
+    X_test_uni_top_percent = X_test_uni[:, np.argsort(mutual_information_X_train_uni)[-(best_n_uni):]]
+    X_test_bi_top_percent = X_test_bi[:, np.argsort(mutual_information_X_train_uni)[-(best_n_uni):]]
+
+    model1 = MultinomialNB(force_alpha=True)
+    model2 = MultinomialNB(force_alpha=True)
+    param_grid = {
+        "alpha": list(np.linspace(0.1, 2, num=11)),  # [0.48],
+        "fit_prior": [True, False]
+    }
+    clf_multinb_uni, pred_multinb_uni = grid_search(model1, param_grid, X_train_uni_top_percent, y_train_uni, X_test_uni_top_percent, y_test_uni)
+    clf_multinb_bi, pred_multinb_bi = grid_search(model2, param_grid, X_train_bi_top_percent, y_train_bi, X_test_bi_top_percent, y_test_bi)
+    accuracy_uni = accuracy_score(y_test_uni, pred_multinb_uni)
+    accuracy_bi = accuracy_score(y_test_bi, pred_multinb_bi)
+    accuracies_uni.append(accuracy_uni)
+    accuracies_bi.append(accuracy_bi)
 
 
-# RAOUL the following code : 
-# 1) gives the indices based on the value order of mutual_information_X_train_uni in increasing way
-# 2) we take the last 100 which are the indices of the best 100 features based on MI
-# 3) we select only those columns in the X_train_uni so we predict on those
-X_train_uni_top_100 = X_train_uni[:, np.argsort(mutual_information_X_train_uni)[-100:]] 
 
-# Same code, but for bi-grams : here i decided to take the best 2000, because the total number of features are 38717
-X_train_bi_top_100 = X_train_bi[:, np.argsort(mutual_information_X_train_bi)[-2000:]] 
+plt.plot(percentage, accuracies_uni, label="Unigram")
+plt.plot(percentage, accuracies_bi, label="Bigram")
+plt.xlabel("Top percentage used based on MI")
+plt.ylabel("Accuracy")
+plt.legend(loc="upper left")
+plt.show()
 
 #######################################################################################################################
 
@@ -113,16 +117,16 @@ all_classifiers = {}
 # 1. Classifier: Multinomial NB
 model = MultinomialNB(force_alpha=True)
 param_grid = {
-    "alpha": [0.48],  # list(np.linspace(0.1, 2, num=11)),
+    "alpha": list(np.linspace(0.1, 2, num=11)),  #[0.48],
     "fit_prior": [True, False]
 }
 print("\n")
 print('\033[92m' + "Multinomial Naive Bayes with unigram features:")
-clf_multinb_uni, pred_multinb_uni = grid_search(model, param_grid, X_train_uni, y_train_uni, X_test_uni, y_test_uni)
-all_classifiers[clf_multinb_uni + "_uni"] = pred_multinb_uni
+#clf_multinb_uni, pred_multinb_uni = grid_search(model, param_grid, X_train_uni_best, y_train_uni_best, X_test_uni, y_test_bi)
+#all_classifiers[clf_multinb_uni + "_uni"] = pred_multinb_uni
 print('\033[92m' + "Multinomial Naive Bayes with unigram and bigram features:")
-clf_multinb_bi, pred_multinb_bi = grid_search(model, param_grid, X_train_bi, y_train_bi, X_test_bi, y_test_bi)
-all_classifiers[clf_multinb_bi + "_bi"] = pred_multinb_bi
+#clf_multinb_bi, pred_multinb_bi = grid_search(model, param_grid, X_train_bi_best, y_train_bi_best, X_test_bi, y_test_bi)
+#all_classifiers[clf_multinb_bi + "_bi"] = pred_multinb_bi
 
 
 # 2. Classifier: Logistic regression
@@ -130,52 +134,52 @@ model = LogisticRegression()
 param_grid = {
     "penalty": ["l1"],  # lasso penalty
     "solver": ["liblinear"],
-    "C": [1],  # list(np.ones(10) - (np.logspace(0, 2, num=10) / 100) + 0.01),
+    "C": [1]  # list(np.ones(10) - (np.logspace(0, 2, num=10) / 100) + 0.01),
 }
 print("\n")
 print('\033[92m' + "Logistic Regression with unigram features:")
-clf_logreg_uni, pred_logreg_uni = grid_search(model, param_grid, X_train_uni, y_train_uni, X_test_uni, y_test_uni)
-all_classifiers[clf_logreg_uni + "_uni"] = pred_logreg_uni
+# clf_logreg_uni, pred_logreg_uni = grid_search(model, param_grid, X_train_uni, y_train_uni, X_test_uni, y_test_uni)
+# all_classifiers[clf_logreg_uni + "_uni"] = pred_logreg_uni
 print('\033[92m' + "Logistic Regression with unigram and bigram features:")
-clf_logreg_bi, pred_logreg_bi = grid_search(model, param_grid, X_train_bi, y_train_bi, X_test_bi, y_test_bi)
-all_classifiers[clf_logreg_bi + "_bi"] = pred_logreg_bi
+# clf_logreg_bi, pred_logreg_bi = grid_search(model, param_grid, X_train_bi, y_train_bi, X_test_bi, y_test_bi)
+# all_classifiers[clf_logreg_bi + "_bi"] = pred_logreg_bi
 
 
 # 3. Classifier: Classification trees
 model = DecisionTreeClassifier()
 param_grid = {
-    "criterion": ["gini", "entropy", "log_loss"],
+    "criterion": ["gini"],  # ["gini", "entropy", "log_loss"],
     "max_depth": [2],  # list(np.arange(5) + 1),
-    "min_samples_split": [2],  # list(np.arange(5) + 1),
-    "min_samples_leaf": [1],  # list(np.arange(5) + 1),
-    "ccp_alpha": [0.0],
+    "min_samples_split": [1.0],  # list(np.arange(5) + 1),
+    "min_samples_leaf": [2],  # list(np.arange(5) + 1),
+    "ccp_alpha": [0.0],  # list(np.arange(11) / 5),
 }
 print("\n")
 print('\033[92m' + "Classification trees with unigram features:")
-clf_ctrees_uni, pred_ctrees_uni = grid_search(model, param_grid, X_train_uni, y_train_uni, X_test_uni, y_test_uni)
-all_classifiers[clf_ctrees_uni + "_uni"] = pred_ctrees_uni
+#clf_ctrees_uni, pred_ctrees_uni = grid_search(model, param_grid, X_train_uni, y_train_uni, X_test_uni, y_test_uni)
+#all_classifiers[clf_ctrees_uni + "_uni"] = pred_ctrees_uni
 print('\033[92m' + "Classification trees with unigram and bigram features:")
-clf_ctrees_bi, pred_ctrees_bi = grid_search(model, param_grid, X_train_bi, y_train_bi, X_test_bi, y_test_bi)
-all_classifiers[clf_ctrees_bi + "_bi"] = pred_ctrees_bi
+#clf_ctrees_bi, pred_ctrees_bi = grid_search(model, param_grid, X_train_bi, y_train_bi, X_test_bi, y_test_bi)
+#all_classifiers[clf_ctrees_bi + "_bi"] = pred_ctrees_bi
 
 
 # 4. Classifier: Random forests
 model = RandomForestClassifier()
 param_grid = {
-    "n_estimators": [500],  # [10, 20, 50, 100, 200, 500],
+    "n_estimators": [10, 20, 50, 100, 200, 500],
     "criterion": ["gini", "entropy", "log_loss"],
-    "max_depth": [2],  # list(np.arange(5) + 1),
-    "min_samples_split": [2],  # list(np.arange(5) + 1),
-    "min_samples_leaf": [1],  # list(np.arange(5) + 1),
-    "ccp_alpha": [0.0],  # ToDo: choose parameters
+    "max_depth": list(np.arange(5) + 1),
+    "min_samples_split": list(np.arange(5) + 1),
+    "min_samples_leaf": list(np.arange(5) + 1),
+    "ccp_alpha": [0.0],  # list(np.arange(11) / 5),
 }
 print("\n")
 print('\033[92m' + "Random Forests with unigram features:")
-clf_randforest_uni, pred_randforest_uni = grid_search(model, param_grid, X_train_uni, y_train_uni, X_test_uni, y_test_uni)
-all_classifiers[clf_randforest_uni + "_uni"] = pred_randforest_uni
+#clf_randforest_uni, pred_randforest_uni = grid_search(model, param_grid, X_train_uni, y_train_uni, X_test_uni, y_test_uni)
+#all_classifiers[clf_randforest_uni + "_uni"] = pred_randforest_uni
 print('\033[92m' + "Random forest with unigram and bigram features:")
-clf_randforest_bi, pred_randforest_bi = grid_search(model, param_grid, X_train_bi, y_train_bi, X_test_bi, y_test_bi)
-all_classifiers[clf_randforest_bi + "_bi"] = pred_randforest_bi
+#clf_randforest_bi, pred_randforest_bi = grid_search(model, param_grid, X_train_bi, y_train_bi, X_test_bi, y_test_bi)
+#all_classifiers[clf_randforest_bi + "_bi"] = pred_randforest_bi
 
 
 #######################################################################################################################
