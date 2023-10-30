@@ -73,9 +73,9 @@ mutual_information_X_train_uni = mutual_information(X_train_uni, y_train_uni) # 
 mutual_information_X_train_bi = mutual_information(X_train_bi, y_train_bi) # those are ndarrays
 
 
-p = 0.05
-best_n_uni = int(3799 // p)
-best_n_bi = int(38717 // p)
+p = 0.35
+best_n_uni = int(3799 * p)
+best_n_bi = int(38717 * p)
 
 X_train_uni_top_percent = X_train_uni[:, np.argsort(mutual_information_X_train_uni)[-(best_n_uni):]]
 X_train_bi_top_percent = X_train_bi[:, np.argsort(mutual_information_X_train_bi)[-best_n_bi:]]
@@ -144,7 +144,7 @@ all_classifiers[clf_ctrees_bi + "_bi"] = pred_ctrees_bi
 # 4. Classifier: Random forests
 model = RandomForestClassifier()
 param_grid = {
-    "n_estimators": [10, 20, 50, 100, 200, 500],
+    "n_estimators": [500],  # [10, 20, 50, 100, 200, 500],
     "criterion": ["gini", "entropy", "log_loss"],
     "max_depth": [3],  # list(np.arange(5) + 1),
     "min_samples_split": [4],  # list(np.arange(5) + 1),

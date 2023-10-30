@@ -1,0 +1,274 @@
+Multinomial Naive Bayes with unigram features:
+Accuracy with below parameters:  0.8125
+{'alpha': 0.48, 'fit_prior': True}
+Precision:  [0.79069767 0.83783784]
+Recall:  [0.85  0.775]
+F1:  [0.81927711 0.80519481]
+              precision    recall  f1-score   support
+
+         0.0       0.79      0.85      0.82        80
+         1.0       0.84      0.78      0.81        80
+
+    accuracy                           0.81       160
+   macro avg       0.81      0.81      0.81       160
+weighted avg       0.81      0.81      0.81       160
+
+Confusion matrix: 
+[[68 12]
+ [18 62]]
+Class name:  MultinomialNB
+Multinomial Naive Bayes with unigram and bigram features:
+Accuracy with below parameters:  0.83125
+{'alpha': 0.29, 'fit_prior': True}
+Precision:  [0.83544304 0.82716049]
+Recall:  [0.825  0.8375]
+F1:  [0.83018868 0.83229814]
+              precision    recall  f1-score   support
+
+         0.0       0.84      0.82      0.83        80
+         1.0       0.83      0.84      0.83        80
+
+    accuracy                           0.83       160
+   macro avg       0.83      0.83      0.83       160
+weighted avg       0.83      0.83      0.83       160
+
+Confusion matrix: 
+[[66 14]
+ [13 67]]
+Class name:  MultinomialNB
+
+
+Logistic Regression with unigram features:
+Accuracy with below parameters:  0.8
+{'C': 1, 'penalty': 'l1', 'solver': 'liblinear'}
+Precision:  [0.79268293 0.80769231]
+Recall:  [0.8125 0.7875]
+F1:  [0.80246914 0.79746835]
+              precision    recall  f1-score   support
+
+         0.0       0.79      0.81      0.80        80
+         1.0       0.81      0.79      0.80        80
+
+    accuracy                           0.80       160
+   macro avg       0.80      0.80      0.80       160
+weighted avg       0.80      0.80      0.80       160
+
+Confusion matrix: 
+[[65 15]
+ [17 63]]
+Class name:  LogisticRegression
+Logistic Regression with unigram and bigram features:
+Accuracy with below parameters:  0.79375
+{'C': 1, 'penalty': 'l1', 'solver': 'liblinear'}
+Precision:  [0.79746835 0.79012346]
+Recall:  [0.7875 0.8   ]
+F1:  [0.79245283 0.79503106]
+              precision    recall  f1-score   support
+
+         0.0       0.80      0.79      0.79        80
+         1.0       0.79      0.80      0.80        80
+
+    accuracy                           0.79       160
+   macro avg       0.79      0.79      0.79       160
+weighted avg       0.79      0.79      0.79       160
+
+Confusion matrix: 
+[[63 17]
+ [16 64]]
+Class name:  LogisticRegression
+
+
+Classification trees with unigram features:
+Accuracy with below parameters:  0.6375
+{'ccp_alpha': 0.0, 'criterion': 'gini', 'max_depth': 2, 'min_samples_leaf': 2, 'min_samples_split': 1.0}
+Precision:  [0.64102564 0.63414634]
+Recall:  [0.625 0.65 ]
+F1:  [0.63291139 0.64197531]
+              precision    recall  f1-score   support
+
+         0.0       0.64      0.62      0.63        80
+         1.0       0.63      0.65      0.64        80
+
+    accuracy                           0.64       160
+   macro avg       0.64      0.64      0.64       160
+weighted avg       0.64      0.64      0.64       160
+
+Confusion matrix: 
+[[50 30]
+ [28 52]]
+Class name:  DecisionTreeClassifier
+Classification trees with unigram and bigram features:
+Accuracy with below parameters:  0.6375
+{'ccp_alpha': 0.0, 'criterion': 'gini', 'max_depth': 2, 'min_samples_leaf': 2, 'min_samples_split': 1.0}
+Precision:  [0.64102564 0.63414634]
+Recall:  [0.625 0.65 ]
+F1:  [0.63291139 0.64197531]
+              precision    recall  f1-score   support
+
+         0.0       0.64      0.62      0.63        80
+         1.0       0.63      0.65      0.64        80
+
+    accuracy                           0.64       160
+   macro avg       0.64      0.64      0.64       160
+weighted avg       0.64      0.64      0.64       160
+
+Confusion matrix: 
+[[50 30]
+ [28 52]]
+Class name:  DecisionTreeClassifier
+
+
+Random Forests with unigram features:
+Accuracy with below parameters:  0.5
+{'ccp_alpha': 0.2, 'criterion': 'log_loss', 'max_depth': 3, 'min_samples_leaf': 5, 'min_samples_split': 4, 'n_estimators': 500}
+/Users/yulia.terzieva/anaconda3/envs/DataMining/lib/python3.11/site-packages/sklearn/metrics/_classification.py:1469: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+Precision:  [0.  0.5]
+Recall:  [0. 1.]
+F1:  [0.         0.66666667]
+/Users/yulia.terzieva/anaconda3/envs/DataMining/lib/python3.11/site-packages/sklearn/metrics/_classification.py:1469: UndefinedMetricWarning: Precision and F-score are ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/Users/yulia.terzieva/anaconda3/envs/DataMining/lib/python3.11/site-packages/sklearn/metrics/_classification.py:1469: UndefinedMetricWarning: Precision and F-score are ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/Users/yulia.terzieva/anaconda3/envs/DataMining/lib/python3.11/site-packages/sklearn/metrics/_classification.py:1469: UndefinedMetricWarning: Precision and F-score are ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+              precision    recall  f1-score   support
+
+         0.0       0.00      0.00      0.00        80
+         1.0       0.50      1.00      0.67        80
+
+    accuracy                           0.50       160
+   macro avg       0.25      0.50      0.33       160
+weighted avg       0.25      0.50      0.33       160
+
+Confusion matrix: 
+[[ 0 80]
+ [ 0 80]]
+Class name:  RandomForestClassifier
+Random forest with unigram and bigram features:
+Accuracy with below parameters:  0.5
+{'ccp_alpha': 0.2, 'criterion': 'gini', 'max_depth': 3, 'min_samples_leaf': 5, 'min_samples_split': 4, 'n_estimators': 500}
+/Users/yulia.terzieva/anaconda3/envs/DataMining/lib/python3.11/site-packages/sklearn/metrics/_classification.py:1469: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+Precision:  [0.5 0. ]
+Recall:  [1. 0.]
+F1:  [0.66666667 0.        ]
+/Users/yulia.terzieva/anaconda3/envs/DataMining/lib/python3.11/site-packages/sklearn/metrics/_classification.py:1469: UndefinedMetricWarning: Precision and F-score are ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/Users/yulia.terzieva/anaconda3/envs/DataMining/lib/python3.11/site-packages/sklearn/metrics/_classification.py:1469: UndefinedMetricWarning: Precision and F-score are ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/Users/yulia.terzieva/anaconda3/envs/DataMining/lib/python3.11/site-packages/sklearn/metrics/_classification.py:1469: UndefinedMetricWarning: Precision and F-score are ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+              precision    recall  f1-score   support
+
+         0.0       0.50      1.00      0.67        80
+         1.0       0.00      0.00      0.00        80
+
+    accuracy                           0.50       160
+   macro avg       0.25      0.50      0.33       160
+weighted avg       0.25      0.50      0.33       160
+
+Confusion matrix: 
+[[80  0]
+ [80  0]]
+Class name:  RandomForestClassifier
+Paired t-test results for classifiers  MultinomialNB_uni  and  MultinomialNB_bi : 
+T-statistic: -1.3506157704892474
+P-value: 0.17873764651228816
+Paired t-test results for classifiers  MultinomialNB_uni  and  LogisticRegression_uni : 
+T-statistic: -0.6312655864226275
+P-value: 0.5287733275082386
+Paired t-test results for classifiers  MultinomialNB_uni  and  LogisticRegression_bi : 
+T-statistic: -1.1519683893920027
+P-value: 0.25106321154034195
+Paired t-test results for classifiers  MultinomialNB_uni  and  DecisionTreeClassifier_uni : 
+T-statistic: -1.0330121460852877
+P-value: 0.303166892100298
+Paired t-test results for classifiers  MultinomialNB_uni  and  DecisionTreeClassifier_bi : 
+T-statistic: -1.0330121460852877
+P-value: 0.303166892100298
+Paired t-test results for classifiers  MultinomialNB_uni  and  RandomForestClassifier_uni : 
+Difference is significant!
+T-statistic: -13.59351991883573
+P-value: 2.03920658559632e-28
+Paired t-test results for classifiers  MultinomialNB_uni  and  RandomForestClassifier_bi : 
+Difference is significant!
+T-statistic: 11.696749697602838
+P-value: 3.3885197594728315e-23
+Paired t-test results for classifiers  MultinomialNB_bi  and  LogisticRegression_uni : 
+T-statistic: 0.5059121047883894
+P-value: 0.6136190411126686
+Paired t-test results for classifiers  MultinomialNB_bi  and  LogisticRegression_bi : 
+T-statistic: 0.0
+P-value: 1.0
+Paired t-test results for classifiers  MultinomialNB_bi  and  DecisionTreeClassifier_uni : 
+T-statistic: -0.12764267678073668
+P-value: 0.8985930477292492
+Paired t-test results for classifiers  MultinomialNB_bi  and  DecisionTreeClassifier_bi : 
+T-statistic: -0.12764267678073668
+P-value: 0.8985930477292492
+Paired t-test results for classifiers  MultinomialNB_bi  and  RandomForestClassifier_uni : 
+Difference is significant!
+T-statistic: -12.45287412905447
+P-value: 2.806091437006126e-25
+Paired t-test results for classifiers  MultinomialNB_bi  and  RandomForestClassifier_bi : 
+Difference is significant!
+T-statistic: 12.768136765233063
+P-value: 3.7983812424036467e-26
+Paired t-test results for classifiers  LogisticRegression_uni  and  LogisticRegression_bi : 
+T-statistic: -0.8312463808222749
+P-value: 0.40708101478558456
+Paired t-test results for classifiers  LogisticRegression_uni  and  DecisionTreeClassifier_uni : 
+T-statistic: -0.515211028615147
+P-value: 0.6071211124540891
+Paired t-test results for classifiers  LogisticRegression_uni  and  DecisionTreeClassifier_bi : 
+T-statistic: -0.515211028615147
+P-value: 0.6071211124540891
+Paired t-test results for classifiers  LogisticRegression_uni  and  RandomForestClassifier_uni : 
+Difference is significant!
+T-statistic: -12.928799099446401
+P-value: 1.3714009158038142e-26
+Paired t-test results for classifiers  LogisticRegression_uni  and  RandomForestClassifier_bi : 
+Difference is significant!
+T-statistic: 12.29812597264414
+P-value: 7.489320431933229e-25
+Paired t-test results for classifiers  LogisticRegression_bi  and  DecisionTreeClassifier_uni : 
+T-statistic: -0.12978830751440665
+P-value: 0.896897960513706
+Paired t-test results for classifiers  LogisticRegression_bi  and  DecisionTreeClassifier_bi : 
+T-statistic: -0.12978830751440665
+P-value: 0.896897960513706
+Paired t-test results for classifiers  LogisticRegression_bi  and  RandomForestClassifier_uni : 
+Difference is significant!
+T-statistic: -12.452874129054468
+P-value: 2.8060914370061654e-25
+Paired t-test results for classifiers  LogisticRegression_bi  and  RandomForestClassifier_bi : 
+Difference is significant!
+T-statistic: 12.768136765233061
+P-value: 3.798381242403755e-26
+Paired t-test results for classifiers  DecisionTreeClassifier_uni  and  DecisionTreeClassifier_bi : 
+T-statistic: nan
+P-value: nan
+Paired t-test results for classifiers  DecisionTreeClassifier_uni  and  RandomForestClassifier_uni : 
+Difference is significant!
+T-statistic: -12.29812597264414
+P-value: 7.489320431933229e-25
+Paired t-test results for classifiers  DecisionTreeClassifier_uni  and  RandomForestClassifier_bi : 
+Difference is significant!
+T-statistic: 12.928799099446401
+P-value: 1.3714009158038142e-26
+Paired t-test results for classifiers  DecisionTreeClassifier_bi  and  RandomForestClassifier_uni : 
+Difference is significant!
+T-statistic: -12.29812597264414
+P-value: 7.489320431933229e-25
+Paired t-test results for classifiers  DecisionTreeClassifier_bi  and  RandomForestClassifier_bi : 
+Difference is significant!
+T-statistic: 12.928799099446401
+P-value: 1.3714009158038142e-26
+/Users/yulia.terzieva/anaconda3/envs/DataMining/lib/python3.11/site-packages/scipy/stats/_axis_nan_policy.py:523: RuntimeWarning: Precision loss occurred in moment calculation due to catastrophic cancellation. This occurs when the data are nearly identical. Results may be unreliable.
+  res = hypotest_fun_out(*samples, **kwds)
+Paired t-test results for classifiers  RandomForestClassifier_uni  and  RandomForestClassifier_bi : 
+Difference is significant!
+T-statistic: inf
+P-value: 0.0
+Execution time in seconds:  136.2974112033844
