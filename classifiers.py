@@ -149,7 +149,7 @@ param_grid = {
     "max_depth": [3],  # list(np.arange(5) + 1),
     "min_samples_split": [4],  # list(np.arange(5) + 1),
     "min_samples_leaf": [5],  # list(np.arange(5) + 1),
-    "ccp_alpha": [0.2],  # list(np.arange(11) / 5),
+    "ccp_alpha": [0.0],  # list(np.arange(11) / 5),
 }
 print("\n")
 print('\033[92m' + "Random Forests with unigram features:")
